@@ -1,9 +1,12 @@
 const AppDataSource = require("../data-source")
-const doctorRepo = AppDataSource.getRepository("Doctor")
+const Doctor = require("../models/Doctor")
+
+const doctorRepo = AppDataSource.getRepository(Doctor)
 
 //CREATE
 exports.createDoctor = async (req, res) =>{
     try{
+        
         const newDoctor = doctorRepo.create(req.body)
         const result = await doctorRepo.save(newDoctor)
 
@@ -14,8 +17,14 @@ exports.createDoctor = async (req, res) =>{
 }
 
 
+//Welcome message
+exports.welcomeMessage = async (req, res) =>{
+    res.send("Welcome to the server");
+}
+
 //READ
 exports.getAllDoctors = async (req, res) =>{
+    
     const doctors = await doctorRepo.find();
     res.json(doctors)
 }
