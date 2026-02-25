@@ -18,9 +18,9 @@ exports.createPatient = async (req, res)=>{
 //READ
 exports.readPatients = async(req, res)=>{
     try{
-        const patient = parseInt(req.params.id)
-        const patentData= await patientRepo.find()
-        if(!patient){
+        const id = parseInt(req.params.id)
+        const patentData=  await patientRepo.findOneBy({ id });
+        if(isNaN(id)){
             res.status(404).json({message: "patient cannot be found"})
         }
         res.status(200).json(patentData)
@@ -44,6 +44,20 @@ exports.updatePatient = async(req,res)=>{
         res.status(200).json({message: "Data has been successfully updated",
             data: updatedDate
         })
+    }catch(err){
+        res.status(400).json({message: err.message})
+    }
+}
+
+//DELETE
+exports.deletePatient = async (req, res) =>{
+    try{
+        const patient = await patientRepo.findAndCountBy({id: parseInt(req.params.id)})
+        if(!patient){
+            return res.status(404).json({message: "Patient could not be found! Already deleted"})
+        }
+        await patientRepo.delete(req.params.id)
+        res.status(200).json({message: "Patient was deleted"})
     }catch(err){
         res.status(400).json({message: err.message})
     }
