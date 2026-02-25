@@ -16,6 +16,25 @@ exports.createDoctor = async (req, res) =>{
     }
 }
 
+//UPDATE
+exports.updateDoctor = async (req, res) =>{
+    try{
+        const id  = parseInt(req.params.id);
+
+        const doctor = await doctorRepo.findOneBy({id});
+        if(!doctor){
+            return res.status(404).json({message: "Doctor not found"});
+        }
+        await doctorRepo.update({id}, req.body);
+        const updatedData = await doctorRepo.findOneBy({id});
+
+        res.status(200).json({ message: "Data has been updated",
+            data: updatedData});
+    }catch(err){
+        console.log("FULL ERROR:", err); 
+        res.status(400).json({message: err.message})
+    }
+}
 
 //Welcome message
 exports.welcomeMessage = async (req, res) =>{
@@ -29,3 +48,20 @@ exports.getAllDoctors = async (req, res) =>{
     res.json(doctors)
 }
 
+exports.getDoctorById = async (req, res) =>{
+    const doctor = await doctorRepo.findOneBy({id: parseInt(req.params.id)})
+    if(!doctor){
+        return res.status(404).json({message: "Doctor not found"})
+    }
+    res.json(doctor)
+}
+
+//Delete
+exports.deleteDoctorById = async (req, res) =>{
+    const doctor = await doctorRepo.findAndCountBy({id: parseInt(req.params.id)})
+    if(!doctor){
+        return res.status(404).json({message: "Doctor already deleted"})
+    }
+    await doctorRepo.delete(req.params.id)
+    res.json({message: "Doctor deleted"})
+}
