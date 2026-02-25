@@ -25,7 +25,7 @@ module.exports = new EntitySchema({
     },relations:{
         doctor:{
             type: "many-to-one",
-            target: "Doctor",        // Name of the entity
+            target: "Doctor",        
             joinColumn: { name: "doctorId" }, // foreign key column
             nullable: false,          // patient must belong to a doctor
             onDelete: "CASCADE",      // delete patients if doctor is deleted
