@@ -1,6 +1,7 @@
 const express = require("express")
 const AppDataSource = require("./data-source")
 const doctorController = require("./controllers/doctorController")
+const patientController = require("./controllers/patientController")
 
 const app = express()
 app.use(express.json())
@@ -13,6 +14,8 @@ AppDataSource.initialize()
         app.put("/api/doctor/update/:id", doctorController.updateDoctor)
         app.get("/api/doctor/:id", doctorController.getDoctorById)
         app.delete("/api/doctor/:id", doctorController.deleteDoctorById)
+
+        app.post("/api/patient/create", patientController.createPatient)
         app.listen(3000, ()=>{
             console.log("Server is running on port 3000")
         })

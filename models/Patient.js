@@ -1,8 +1,8 @@
 const {EntitySchema} = require("typeorm")
 
 module.exports = new EntitySchema({
-    name: "Doctor",
-    tableName: "doctors",
+    name: "Patient",
+    tableName: "patients",
     columns:{
         id: {
             primary: true,
@@ -18,16 +18,17 @@ module.exports = new EntitySchema({
         address:{
             type: "varchar",
         },
-        email:{
+        insuranceNR:{
             type: "varchar",
             unique: true,
         },
-    },
-    relations: {
-        patients:{
-            type: "one-to-many",
-            target: "Patient",
-            inverseSide: "doctor",
-        },
-    },
-});
+    },relations:{
+        doctor:{
+            type: "many-to-one",
+            target: "Doctor",        // Name of the entity
+            joinColumn: { name: "doctorId" }, // foreign key column
+            nullable: false,          // patient must belong to a doctor
+            onDelete: "CASCADE",      // delete patients if doctor is deleted
+        }
+    }
+})
