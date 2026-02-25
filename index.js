@@ -16,7 +16,9 @@ AppDataSource.initialize()
         app.delete("/api/doctor/:id", doctorController.deleteDoctorById)
 
         app.post("/api/patient/create", patientController.createPatient)
+        app.get("/api/patient/read/:id",patientController.readPatients)
         app.put("/api/patient/update/:id",patientController.updatePatient)
+        
 
         app.listen(3000, ()=>{
             console.log("Server is running on port 3000")

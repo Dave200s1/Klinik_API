@@ -15,6 +15,20 @@ exports.createPatient = async (req, res)=>{
     }
 }
 
+//READ
+exports.readPatients = async(req, res)=>{
+    try{
+        const patient = parseInt(req.params.id)
+        const patentData= await patientRepo.find()
+        if(!patient){
+            res.status(404).json({message: "patient cannot be found"})
+        }
+        res.status(200).json(patentData)
+    }catch(err){
+        res.status(400).json({message: err.message})
+    }
+}
+
 //UPDATE
 exports.updatePatient = async(req,res)=>{
     try{
