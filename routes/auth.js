@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const AppDataSource = require("../data-source")
 const verifyToken = require("../middleware/verifyToken")
+const { TreeRepository } = require("typeorm")
 
 router.post("/register",async(req,res)=>{
     try{
@@ -76,6 +77,19 @@ router.use("/login",async(req,res)=>{
     }catch(error){
         console.error(error)
         res.status(500).json({ error: "Interner Serverfehler" })
+    }
+})
+
+router.get("/me", verifyToken, async(req, res)=>{
+    try{
+        const userRepo = AppDataSource.getRepository("User")
+        const user = await userRepo.findOneBy({id: req.user.userId})
+        if(!user){
+            return res.status(400).json({error: "Benutzer nicht gefunden"})
+        }
+        res.json({id: user.id, name: user.name, email: user.email})
+    }catch(error){
+        res.status(500).json({ error: error.message })
     }
 })
 
