@@ -5,6 +5,15 @@ for managing a clinical system with doctors, patients and diagnoses.
 
 The project is designed as a portfolio backend project, following REST principles and a structured layered architecture.
 
+### Keep in mind
+
+You need to generate a .env file in your root directory
+
+```
+TOKEN_SECRET= YOURKEY
+```
+
+
 ## ✨ Features
 * CRUD operations for:
     * Doctors
