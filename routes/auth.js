@@ -40,4 +40,43 @@ router.post("/register",async(req,res)=>{
 })
 
 
+router.use("/login",async(req,res)=>{
+    try{
+        const {email,password} = req.body
+        if(!email || !password){
+            return res.status(400).json({error: "E-mail & Password sind erforderlich"})
+        }
+        const userRepo = AppDataSource.getRepository("User")
+        const user = await userRepo.findOneBy({email})
+
+        if(!user){
+            return res.status(400).json({error: "E-mail ist falsch"})
+        }
+
+
+        const validPass = await bcrypt.compare(password,user.password)
+        if(!validPass){
+            return res.status(400).json({error: "Password ist falsch"})
+        }
+
+        //creating a jwt
+
+        const token = jwt.sign(
+            {userId: user.id,   email: user.email  },
+            process.env.TOKEN_SECRET,
+            {expiresIn: "7d"}
+        )
+
+        res.status(200).json({
+            message: "Login erfolgreich",
+            token,
+            user: {id: user.id, name: user.name, email: user.email}
+        })
+
+    }catch(error){
+        console.error(error)
+        res.status(500).json({ error: "Interner Serverfehler" })
+    }
+})
+
 module.exports = router
