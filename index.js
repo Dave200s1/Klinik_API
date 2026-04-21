@@ -1,13 +1,18 @@
+require("dotenv").config()
 const express = require("express")
 const AppDataSource = require("./data-source")
 const doctorController = require("./controllers/doctorController")
 const patientController = require("./controllers/patientController")
 const diagnoseController = require("./controllers/diagnoseController")
+const authRoute = require("./routes/auth")
 
 const app = express()
 app.use(express.json())
+//Authentication
+app.use("/api/auth",authRoute) // mouting the route
 
-AppDataSource.initialize()
+//Business logic
+AppDataSource.initialize() 
     .then(() =>{
         app.get("/", doctorController.welcomeMessage)
         app.get("/api/doctors/", doctorController.getAllDoctors)
