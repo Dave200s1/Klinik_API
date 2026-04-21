@@ -5,6 +5,14 @@ for managing a clinical system with doctors, patients and diagnoses.
 
 The project is designed as a portfolio backend project, following REST principles and a structured layered architecture.
 
+## 🔐 Authentication
+
+This API uses **JWT (JSON Web Token) authentication** to secure protected routes.
+
+- Users must log in to receive a token
+- The token must be included in protected requests via headers:
+- x-auth-token: <your_token>
+
 ### Keep in mind
 
 You need to generate a .env file in your root directory
@@ -35,7 +43,7 @@ TOKEN_SECRET= YOURKEY
 
 - REST Architecture
 
-- Insomnia (API Testing)
+- Bruno (API Testing)
 
 ---
 
